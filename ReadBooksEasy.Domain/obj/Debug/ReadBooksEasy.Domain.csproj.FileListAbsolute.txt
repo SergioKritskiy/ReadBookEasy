@@ -1,0 +1,11 @@
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\ReadBooksEasy.Domain.dll
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\ReadBooksEasy.Domain.pdb
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\obj\Debug\ReadBooksEasy.Domain.dll
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\obj\Debug\ReadBooksEasy.Domain.pdb
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\ReadBooksEasy.Domain.dll.config
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.dll
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.SqlServer.dll
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.xml
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.SqlServer.xml
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\aspnet-ReadBooksEasy.WebUI-20160327170846.mdf
+D:\Projects\ReadBooksEasy\ReadBooksEasy.Domain\bin\Debug\aspnet-ReadBooksEasy.WebUI-20160327170846_log.ldf

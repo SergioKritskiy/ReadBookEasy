@@ -1,0 +1,118 @@
+﻿@model IEnumerable<ReadBooksEasy.Domain.Entities.Book>
+@{
+    ViewBag.Title = "Personal Area";
+    Layout = "~/Views/Shared/_PersonalArea.cshtml";
+}
+<head>
+    <title>Personal Area</title>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
+        BODY {
+            font-family: Cambria, Georgia, "Times New Roman";
+            margin: 0;
+        }
+
+        DIV#header DIV.title, DIV.item H3, DIV.item H4, DIV.pager A {
+            font: bold 1em "Arial Narrow", "Franklin Gothic Medium", Arial;
+        }
+
+        DIV#header {
+            background-color: #444;
+            border-bottom: 2px solid #111;
+            color: White;
+        }
+
+            DIV#header DIV.title {
+                font-size: 2em;
+                padding: .6em;
+            }
+
+        DIV#content {
+            border-left: 7px ridge gray;
+            margin-left: 19em;
+            padding: 1em;
+            height:100%;
+        }
+
+        DIV#bookmark {
+            /*margin-left: 30px;*/
+            float: left;
+            width: 18em;
+            padding: .3em;
+            height:100%;
+            background-color: #efeeef; 
+        }
+        DIV#bookmarkItems {
+            padding-left: 1em;
+            float: left;
+            width: 17em;
+        }
+
+
+
+        DIV.pager {
+            text-align: right;
+            border-top: 2px solid silver;
+            padding: .5em 0 0 0;
+            margin-top: 1em;
+        }
+
+            DIV.pager A {
+                font-size: 1.1em;
+                color: #666;
+                text-decoration: none;
+                padding: 0 .4em 0 .4em;
+            }
+
+                DIV.pager A:hover {
+                    background-color: Silver;
+                }
+
+                DIV.pager A.selected {
+                    background-color: #353535;
+                    color: White;
+                }
+        div#TypeOfBooks {
+        width:100%;
+        /*background-color:#ffd800;*/
+        }
+
+        DIV#TypeOfBooks A {   
+            font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; 
+            display: -webkit-inline-box;   
+            text-decoration: none; 
+            padding: .6em; 
+            color: Black;   
+            border: 1px solid silver; 
+            } 
+        DIV#TypeOfBooks A.selected { background-color: #666; color: White; } 
+        DIV#TypeOfBooks A:hover { background-color: #CCC; } 
+        DIV#TypeOfBooks A.selected:hover { background-color: #666; }
+
+    </style>
+</head>
+<div id="bookmark">
+    <p style="text-align:center">Bookmark</p>
+    <div id="bookmarkItems">
+        text<br>text
+    </div>
+    </div>
+<div id="content">
+    <div id="TypeOfBooks">
+    @Html.ActionLink("All Books", "Index", new { Own = 0 }, new { @style = "float:left;width:47%;" })
+    @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:right;width:50%;" })</div>
+    @foreach (var b in Model)
+    {
+        Html.RenderPartial("BooksPartial",b);
+    }
+    @ViewBag.IdU @ViewBag.Name
+    <p>main side of site</p>
+    <p>main side of site</p>
+    <p>main side of site</p>
+    <p>main side of site</p>
+    <p>main side of site</p>
+    <p>main side of site</p>
+</div>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Bookmark">
+    <Key>
+      <PropertyRef Name="IdBookmark" />
+    </Key>
+    <Property Name="IdBookmark" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdUser" Type="Int32" Nullable="false" />
+    <Property Name="IdBook" Type="Int32" Nullable="false" />
+    <Property Name="numberOfPage" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="Self.FK__Bookmarks__IdBoo__398D8EEE" FromRole="Bookmarks" ToRole="Books" />
+  </EntityType>
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="idBook" />
+    </Key>
+    <Property Name="idBook" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nameOfBook" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="genreOfBook" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="fileOfBook" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ratingOfBook" Type="Double" />
+    <NavigationProperty Name="Bookmarks" Relationship="Self.FK__Bookmarks__IdBoo__398D8EEE" FromRole="Books" ToRole="Bookmarks" />
+    <NavigationProperty Name="UsersBooks" Relationship="Self.FK__UsersBook__idBoo__3B75D760" FromRole="Books" ToRole="UsersBooks" />
+  </EntityType>
+  <EntityType Name="UsersBook">
+    <Key>
+      <PropertyRef Name="IdUsers" />
+      <PropertyRef Name="idBooks" />
+    </Key>
+    <Property Name="IdUsers" Type="Int32" Nullable="false" />
+    <Property Name="idBooks" Type="Int32" Nullable="false" />
+    <Property Name="usingFieldRating" Type="Boolean" />
+    <Property Name="ratingForBook" Type="Double" />
+    <NavigationProperty Name="Book" Relationship="Self.FK__UsersBook__idBoo__3B75D760" FromRole="UsersBooks" ToRole="Books" />
+  </EntityType>
+  <Association Name="FK__Bookmarks__IdBoo__398D8EEE">
+    <End Role="Books" Type="Self.Book" Multiplicity="1" />
+    <End Role="Bookmarks" Type="Self.Bookmark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="idBook" />
+      </Principal>
+      <Dependent Role="Bookmarks">
+        <PropertyRef Name="IdBook" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UsersBook__idBoo__3B75D760">
+    <End Role="Books" Type="Self.Book" Multiplicity="1" />
+    <End Role="UsersBooks" Type="Self.UsersBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="idBook" />
+      </Principal>
+      <Dependent Role="UsersBooks">
+        <PropertyRef Name="idBooks" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bookmarks" EntityType="Self.Bookmark" />
+    <EntitySet Name="Books" EntityType="Self.Book" />
+    <EntitySet Name="UsersBooks" EntityType="Self.UsersBook" />
+    <AssociationSet Name="FK__Bookmarks__IdBoo__398D8EEE" Association="Self.FK__Bookmarks__IdBoo__398D8EEE">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Bookmarks" EntitySet="Bookmarks" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UsersBook__idBoo__3B75D760" Association="Self.FK__UsersBook__idBoo__3B75D760">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="UsersBooks" EntitySet="UsersBooks" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

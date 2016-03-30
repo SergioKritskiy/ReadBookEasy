@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="Bookmarks">
+      <EntityTypeMapping TypeName="Model.Bookmark">
+        <MappingFragment StoreEntitySet="Bookmarks">
+          <ScalarProperty Name="IdBookmark" ColumnName="IdBookmark" />
+          <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+          <ScalarProperty Name="IdBook" ColumnName="IdBook" />
+          <ScalarProperty Name="numberOfPage" ColumnName="numberOfPage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Books">
+      <EntityTypeMapping TypeName="Model.Book">
+        <MappingFragment StoreEntitySet="Books">
+          <ScalarProperty Name="idBook" ColumnName="idBook" />
+          <ScalarProperty Name="nameOfBook" ColumnName="nameOfBook" />
+          <ScalarProperty Name="genreOfBook" ColumnName="genreOfBook" />
+          <ScalarProperty Name="fileOfBook" ColumnName="fileOfBook" />
+          <ScalarProperty Name="ratingOfBook" ColumnName="ratingOfBook" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersBooks">
+      <EntityTypeMapping TypeName="Model.UsersBook">
+        <MappingFragment StoreEntitySet="UsersBooks">
+          <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
+          <ScalarProperty Name="idBooks" ColumnName="idBooks" />
+          <ScalarProperty Name="usingFieldRating" ColumnName="usingFieldRating" />
+          <ScalarProperty Name="ratingForBook" ColumnName="ratingForBook" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
