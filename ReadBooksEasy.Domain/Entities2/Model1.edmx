@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Bookmarks">
           <Key>
             <PropertyRef Name="IdBookmark" />
@@ -24,6 +24,13 @@
           <Property Name="fileOfBook" Type="varbinary(max)" />
           <Property Name="ratingOfBook" Type="float" />
         </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="UsersBooks">
           <Key>
             <PropertyRef Name="IdUsers" />
@@ -33,6 +40,7 @@
           <Property Name="idBooks" Type="int" Nullable="false" />
           <Property Name="usingFieldRating" Type="bit" />
           <Property Name="ratingForBook" Type="float" />
+          <Property Name="userBooksBookFk" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__Bookmarks__IdBoo__398D8EEE">
           <End Role="Books" Type="Self.Books" Multiplicity="1" />
@@ -46,7 +54,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UsersBook__idBoo__3B75D760">
+        <Association Name="FK__Bookmarks__IdUse__38996AB5">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="Bookmarks" Type="Self.Bookmarks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Bookmarks">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UsersBook__userB__5AEE82B9">
           <End Role="Books" Type="Self.Books" Multiplicity="1" />
           <End Role="UsersBooks" Type="Self.UsersBooks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -54,25 +74,29 @@
               <PropertyRef Name="idBook" />
             </Principal>
             <Dependent Role="UsersBooks">
-              <PropertyRef Name="idBooks" />
+              <PropertyRef Name="userBooksBookFk" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Bookmarks" EntityType="Self.Bookmarks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersBooks" EntityType="Self.UsersBooks" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Bookmarks__IdBoo__398D8EEE" Association="Self.FK__Bookmarks__IdBoo__398D8EEE">
             <End Role="Books" EntitySet="Books" />
             <End Role="Bookmarks" EntitySet="Bookmarks" />
           </AssociationSet>
-          <AssociationSet Name="FK__UsersBook__idBoo__3B75D760" Association="Self.FK__UsersBook__idBoo__3B75D760">
+          <AssociationSet Name="FK__Bookmarks__IdUse__38996AB5" Association="Self.FK__Bookmarks__IdUse__38996AB5">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="Bookmarks" EntitySet="Bookmarks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UsersBook__userB__5AEE82B9" Association="Self.FK__UsersBook__userB__5AEE82B9">
             <End Role="Books" EntitySet="Books" />
             <End Role="UsersBooks" EntitySet="UsersBooks" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -85,6 +109,7 @@
           <Property Name="IdBook" Type="Int32" Nullable="false" />
           <Property Name="numberOfPage" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Book" Relationship="Self.FK__Bookmarks__IdBoo__398D8EEE" FromRole="Bookmarks" ToRole="Books" />
+          <NavigationProperty Name="UserProfile" Relationship="Model.FK__Bookmarks__IdUse__38996AB5" FromRole="Bookmark" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="Book">
           <Key>
@@ -96,19 +121,8 @@
           <Property Name="fileOfBook" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="ratingOfBook" Type="Double" />
           <NavigationProperty Name="Bookmarks" Relationship="Self.FK__Bookmarks__IdBoo__398D8EEE" FromRole="Books" ToRole="Bookmarks" />
-          <NavigationProperty Name="UsersBooks" Relationship="Self.FK__UsersBook__idBoo__3B75D760" FromRole="Books" ToRole="UsersBooks" />
-        </EntityType>
-        <EntityType Name="UsersBook">
-          <Key>
-            <PropertyRef Name="IdUsers" />
-            <PropertyRef Name="idBooks" />
-          </Key>
-          <Property Name="IdUsers" Type="Int32" Nullable="false" />
-          <Property Name="idBooks" Type="Int32" Nullable="false" />
-          <Property Name="usingFieldRating" Type="Boolean" />
-          <Property Name="ratingForBook" Type="Double" />
-          <NavigationProperty Name="Book" Relationship="Self.FK__UsersBook__idBoo__3B75D760" FromRole="UsersBooks" ToRole="Books" />
-        </EntityType>
+          <NavigationProperty Name="UsersBooks" Relationship="Model.FK__UsersBook__userB__5AEE82B9" FromRole="Book" ToRole="UsersBook" />
+          </EntityType>
         <Association Name="FK__Bookmarks__IdBoo__398D8EEE">
           <End Role="Books" Type="Self.Book" Multiplicity="1" />
           <End Role="Bookmarks" Type="Self.Bookmark" Multiplicity="*" />
@@ -121,31 +135,68 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UsersBook__idBoo__3B75D760">
-          <End Role="Books" Type="Self.Book" Multiplicity="1" />
-          <End Role="UsersBooks" Type="Self.UsersBook" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Books">
-              <PropertyRef Name="idBook" />
-            </Principal>
-            <Dependent Role="UsersBooks">
-              <PropertyRef Name="idBooks" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Bookmarks" EntityType="Self.Bookmark" />
           <EntitySet Name="Books" EntityType="Self.Book" />
-          <EntitySet Name="UsersBooks" EntityType="Self.UsersBook" />
           <AssociationSet Name="FK__Bookmarks__IdBoo__398D8EEE" Association="Self.FK__Bookmarks__IdBoo__398D8EEE">
             <End Role="Books" EntitySet="Books" />
             <End Role="Bookmarks" EntitySet="Bookmarks" />
           </AssociationSet>
-          <AssociationSet Name="FK__UsersBook__idBoo__3B75D760" Association="Self.FK__UsersBook__idBoo__3B75D760">
-            <End Role="Books" EntitySet="Books" />
-            <End Role="UsersBooks" EntitySet="UsersBooks" />
+          <EntitySet Name="UserProfiles" EntityType="Model.UserProfile" />
+          <AssociationSet Name="FK__Bookmarks__IdUse__38996AB5" Association="Model.FK__Bookmarks__IdUse__38996AB5">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="Bookmark" EntitySet="Bookmarks" />
+          </AssociationSet>
+          <EntitySet Name="UsersBooks" EntityType="Model.UsersBook" />
+          <AssociationSet Name="FK__UsersBook__userB__5AEE82B9" Association="Model.FK__UsersBook__userB__5AEE82B9">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="UsersBook" EntitySet="UsersBooks" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bookmarks" Relationship="Model.FK__Bookmarks__IdUse__38996AB5" FromRole="UserProfile" ToRole="Bookmark" />
+        </EntityType>
+        <Association Name="FK__Bookmarks__IdUse__38996AB5">
+          <End Type="Model.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="Model.Bookmark" Role="Bookmark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Bookmark">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UsersBook">
+          <Key>
+            <PropertyRef Name="IdUsers" />
+            <PropertyRef Name="idBooks" />
+          </Key>
+          <Property Name="IdUsers" Type="Int32" Nullable="false" />
+          <Property Name="idBooks" Type="Int32" Nullable="false" />
+          <Property Name="usingFieldRating" Type="Boolean" />
+          <Property Name="ratingForBook" Type="Double" />
+          <Property Name="userBooksBookFk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Model.FK__UsersBook__userB__5AEE82B9" FromRole="UsersBook" ToRole="Book" />
+        </EntityType>
+        <Association Name="FK__UsersBook__userB__5AEE82B9">
+          <End Type="Model.Book" Role="Book" Multiplicity="1" />
+          <End Type="Model.UsersBook" Role="UsersBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="idBook" />
+            </Principal>
+            <Dependent Role="UsersBook">
+              <PropertyRef Name="userBooksBookFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -173,13 +224,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="Model.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UsersBooks">
             <EntityTypeMapping TypeName="Model.UsersBook">
               <MappingFragment StoreEntitySet="UsersBooks">
-                <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
-                <ScalarProperty Name="idBooks" ColumnName="idBooks" />
-                <ScalarProperty Name="usingFieldRating" ColumnName="usingFieldRating" />
+                <ScalarProperty Name="userBooksBookFk" ColumnName="userBooksBookFk" />
                 <ScalarProperty Name="ratingForBook" ColumnName="ratingForBook" />
+                <ScalarProperty Name="usingFieldRating" ColumnName="usingFieldRating" />
+                <ScalarProperty Name="idBooks" ColumnName="idBooks" />
+                <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

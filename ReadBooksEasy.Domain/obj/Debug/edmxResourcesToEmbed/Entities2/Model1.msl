@@ -22,13 +22,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="UserProfiles">
+      <EntityTypeMapping TypeName="Model.UserProfile">
+        <MappingFragment StoreEntitySet="UserProfile">
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="UsersBooks">
       <EntityTypeMapping TypeName="Model.UsersBook">
         <MappingFragment StoreEntitySet="UsersBooks">
-          <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
-          <ScalarProperty Name="idBooks" ColumnName="idBooks" />
-          <ScalarProperty Name="usingFieldRating" ColumnName="usingFieldRating" />
+          <ScalarProperty Name="userBooksBookFk" ColumnName="userBooksBookFk" />
           <ScalarProperty Name="ratingForBook" ColumnName="ratingForBook" />
+          <ScalarProperty Name="usingFieldRating" ColumnName="usingFieldRating" />
+          <ScalarProperty Name="idBooks" ColumnName="idBooks" />
+          <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

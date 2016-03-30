@@ -9,6 +9,7 @@
     <Property Name="IdBook" Type="Int32" Nullable="false" />
     <Property Name="numberOfPage" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Book" Relationship="Self.FK__Bookmarks__IdBoo__398D8EEE" FromRole="Bookmarks" ToRole="Books" />
+    <NavigationProperty Name="UserProfile" Relationship="Model.FK__Bookmarks__IdUse__38996AB5" FromRole="Bookmark" ToRole="UserProfile" />
   </EntityType>
   <EntityType Name="Book">
     <Key>
@@ -20,18 +21,7 @@
     <Property Name="fileOfBook" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="ratingOfBook" Type="Double" />
     <NavigationProperty Name="Bookmarks" Relationship="Self.FK__Bookmarks__IdBoo__398D8EEE" FromRole="Books" ToRole="Bookmarks" />
-    <NavigationProperty Name="UsersBooks" Relationship="Self.FK__UsersBook__idBoo__3B75D760" FromRole="Books" ToRole="UsersBooks" />
-  </EntityType>
-  <EntityType Name="UsersBook">
-    <Key>
-      <PropertyRef Name="IdUsers" />
-      <PropertyRef Name="idBooks" />
-    </Key>
-    <Property Name="IdUsers" Type="Int32" Nullable="false" />
-    <Property Name="idBooks" Type="Int32" Nullable="false" />
-    <Property Name="usingFieldRating" Type="Boolean" />
-    <Property Name="ratingForBook" Type="Double" />
-    <NavigationProperty Name="Book" Relationship="Self.FK__UsersBook__idBoo__3B75D760" FromRole="UsersBooks" ToRole="Books" />
+    <NavigationProperty Name="UsersBooks" Relationship="Model.FK__UsersBook__userB__5AEE82B9" FromRole="Book" ToRole="UsersBook" />
   </EntityType>
   <Association Name="FK__Bookmarks__IdBoo__398D8EEE">
     <End Role="Books" Type="Self.Book" Multiplicity="1" />
@@ -45,29 +35,66 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UsersBook__idBoo__3B75D760">
-    <End Role="Books" Type="Self.Book" Multiplicity="1" />
-    <End Role="UsersBooks" Type="Self.UsersBook" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Books">
-        <PropertyRef Name="idBook" />
-      </Principal>
-      <Dependent Role="UsersBooks">
-        <PropertyRef Name="idBooks" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Bookmarks" EntityType="Self.Bookmark" />
     <EntitySet Name="Books" EntityType="Self.Book" />
-    <EntitySet Name="UsersBooks" EntityType="Self.UsersBook" />
     <AssociationSet Name="FK__Bookmarks__IdBoo__398D8EEE" Association="Self.FK__Bookmarks__IdBoo__398D8EEE">
       <End Role="Books" EntitySet="Books" />
       <End Role="Bookmarks" EntitySet="Bookmarks" />
     </AssociationSet>
-    <AssociationSet Name="FK__UsersBook__idBoo__3B75D760" Association="Self.FK__UsersBook__idBoo__3B75D760">
-      <End Role="Books" EntitySet="Books" />
-      <End Role="UsersBooks" EntitySet="UsersBooks" />
+    <EntitySet Name="UserProfiles" EntityType="Model.UserProfile" />
+    <AssociationSet Name="FK__Bookmarks__IdUse__38996AB5" Association="Model.FK__Bookmarks__IdUse__38996AB5">
+      <End Role="UserProfile" EntitySet="UserProfiles" />
+      <End Role="Bookmark" EntitySet="Bookmarks" />
+    </AssociationSet>
+    <EntitySet Name="UsersBooks" EntityType="Model.UsersBook" />
+    <AssociationSet Name="FK__UsersBook__userB__5AEE82B9" Association="Model.FK__UsersBook__userB__5AEE82B9">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="UsersBook" EntitySet="UsersBooks" />
     </AssociationSet>
   </EntityContainer>
+  <EntityType Name="UserProfile">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Bookmarks" Relationship="Model.FK__Bookmarks__IdUse__38996AB5" FromRole="UserProfile" ToRole="Bookmark" />
+  </EntityType>
+  <Association Name="FK__Bookmarks__IdUse__38996AB5">
+    <End Type="Model.UserProfile" Role="UserProfile" Multiplicity="1" />
+    <End Type="Model.Bookmark" Role="Bookmark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Bookmark">
+        <PropertyRef Name="IdUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="UsersBook">
+    <Key>
+      <PropertyRef Name="IdUsers" />
+      <PropertyRef Name="idBooks" />
+    </Key>
+    <Property Name="IdUsers" Type="Int32" Nullable="false" />
+    <Property Name="idBooks" Type="Int32" Nullable="false" />
+    <Property Name="usingFieldRating" Type="Boolean" />
+    <Property Name="ratingForBook" Type="Double" />
+    <Property Name="userBooksBookFk" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="Model.FK__UsersBook__userB__5AEE82B9" FromRole="UsersBook" ToRole="Book" />
+  </EntityType>
+  <Association Name="FK__UsersBook__userB__5AEE82B9">
+    <End Type="Model.Book" Role="Book" Multiplicity="1" />
+    <End Type="Model.UsersBook" Role="UsersBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="idBook" />
+      </Principal>
+      <Dependent Role="UsersBook">
+        <PropertyRef Name="userBooksBookFk" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

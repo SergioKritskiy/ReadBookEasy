@@ -27,7 +27,7 @@ namespace ReadBooksEasy.WebUI.Controllers
             ViewBag.Name = User.Identity.Name;
             ViewBag.Message = "Authorize area.";
             Book book = new Book(){nameOfBook="new"};
-            repo.SaveBook(1,book);
+            //repo.SaveBook(1,book);
             if (Own == 1)
             {
                 IList<Book> UsersBook = new List<Book>();
@@ -38,6 +38,21 @@ namespace ReadBooksEasy.WebUI.Controllers
             {
                 return View(repo.Books);
             }
+        }
+
+        public ActionResult AddBook() {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddBook(Book book, HttpPostedFileBase bookFile)
+        {
+            var IdOfUser = WebSecurity.GetUserId(User.Identity.Name);
+            if (bookFile != null) {
+                book.fileOfBook = new byte[bookFile.ContentLength];
+                bookFile.InputStream.Read(book.fileOfBook,0,bookFile.ContentLength);
+                repo.SaveBook(IdOfUser,book);
+            }
+            return RedirectToAction("Index");
         }
 
     }

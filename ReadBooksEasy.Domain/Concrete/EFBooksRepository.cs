@@ -27,11 +27,6 @@ namespace ReadBooksEasy.Domain.Concrete
             var NameOfBook = context.Books.FirstOrDefault(b=>b.nameOfBook.Equals(book.nameOfBook));
             UsersBook newRecord = new UsersBook();
             if (NameOfBook==null){
-
-                book.nameOfBook = "new";
-                UserId = 1;
-
-
                 context.Books.Add(book);
                 context.SaveChanges();
                 var BookInDb = context.Books.FirstOrDefault(b=>b.nameOfBook==book.nameOfBook);
@@ -40,6 +35,7 @@ namespace ReadBooksEasy.Domain.Concrete
                 newRecord.IdUsers = UserId;
                 newRecord.usingFieldRating = false;
                 newRecord.ratingForBook = null;
+                newRecord.userBooksBookFk = BookInDb.idBook;
                 context.UserBook.Add(newRecord);
                 context.SaveChanges();
             }

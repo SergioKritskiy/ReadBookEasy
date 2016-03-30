@@ -7,9 +7,11 @@
       <Diagram DiagramId="827bc5d105f245f0857b5ea3e4e21c17" Name="Diagram1">
         <EntityTypeShape EntityType="Model.Bookmark" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Book" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.UsersBook" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
         <AssociationConnector Association="Model.FK__Bookmarks__IdBoo__398D8EEE" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK__UsersBook__idBoo__3B75D760" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.UserProfile" Width="1.5" PointX="5.375" PointY="0.875" />
+        <AssociationConnector Association="Model.FK__Bookmarks__IdUse__38996AB5" />
+        <EntityTypeShape EntityType="Model.UsersBook" Width="1.5" PointX="3" PointY="4.25" />
+        <AssociationConnector Association="Model.FK__UsersBook__userB__5AEE82B9" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

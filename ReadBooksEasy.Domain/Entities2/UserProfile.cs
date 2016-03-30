@@ -12,14 +12,16 @@ namespace ReadBooksEasy.Domain.Entities2
     using System;
     using System.Collections.Generic;
     
-    public partial class UsersBook
+    public partial class UserProfile
     {
-        public int IdUsers { get; set; }
-        public int idBooks { get; set; }
-        public Nullable<bool> usingFieldRating { get; set; }
-        public Nullable<double> ratingForBook { get; set; }
-        public int userBooksBookFk { get; set; }
+        public UserProfile()
+        {
+            this.Bookmarks = new HashSet<Bookmark>();
+        }
     
-        public virtual Book Book { get; set; }
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+    
+        public virtual ICollection<Bookmark> Bookmarks { get; set; }
     }
 }

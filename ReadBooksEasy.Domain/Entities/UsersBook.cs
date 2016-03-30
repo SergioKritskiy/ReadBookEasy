@@ -17,7 +17,8 @@ namespace ReadBooksEasy.Domain.Entities
         public int idBooks { get; set; }
         public Nullable<bool> usingFieldRating { get; set; }
         public Nullable<double> ratingForBook { get; set; }
-
+        public int userBooksBookFk { get; set; }
+        [ForeignKey("userBooksBookFk")]
         public virtual Book Book { get; set; }
     }
 }

@@ -316,6 +316,7 @@
     <Content Include="Views\Shared\_PersonalArea.cshtml" />
     <Content Include="Views\PersonalArea\Index.cshtml" />
     <Content Include="Views\Shared\BooksPartial.cshtml" />
+    <Content Include="Views\PersonalArea\AddBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

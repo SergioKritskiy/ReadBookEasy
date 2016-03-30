@@ -1,10 +1,12 @@
-﻿@model IEnumerable<ReadBooksEasy.Domain.Entities.Book>
+﻿@model ReadBooksEasy.Domain.Entities.Book
+
 @{
-    ViewBag.Title = "Personal Area";
+    ViewBag.Title = "AddBook";
     Layout = "~/Views/Shared/_PersonalArea.cshtml";
 }
+
 <head>
-    <title>Personal Area</title>
+    <title>Add Book</title>
     <style type="text/css">
         html, body {
             height: 100%;
@@ -34,7 +36,7 @@
             border-left: 7px ridge gray;
             margin-left: 19em;
             padding: 1em;
-            height:100%;
+            height: 100%;
         }
 
         DIV#bookmark {
@@ -42,9 +44,10 @@
             float: left;
             width: 18em;
             padding: .3em;
-            height:100%;
-            background-color: #efeeef; 
+            height: 100%;
+            background-color: #efeeef;
         }
+
         DIV#bookmarkItems {
             padding-left: 1em;
             float: left;
@@ -75,23 +78,33 @@
                     background-color: #353535;
                     color: White;
                 }
+
         div#TypeOfBooks {
-        width:100%;
-        /*background-color:#ffd800;*/
+            width: 100%;
+            /*background-color:#ffd800;*/
         }
 
-        DIV#TypeOfBooks A {   
-            font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; 
-            display: -webkit-inline-box;   
-            text-decoration: none; 
-            padding: .6em; 
-            color: Black;   
-            border: 1px solid silver; 
-            } 
-        DIV#TypeOfBooks A.selected { background-color: #666; color: White; } 
-        DIV#TypeOfBooks A:hover { background-color: #CCC; } 
-        DIV#TypeOfBooks A.selected:hover { background-color: #666; }
+            DIV#TypeOfBooks A {
+                font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial;
+                display: -webkit-inline-box;
+                text-decoration: none;
+                padding: .6em;
+                color: Black;
+                border: 1px solid silver;
+            }
 
+                DIV#TypeOfBooks A.selected {
+                    background-color: #666;
+                    color: White;
+                }
+
+                DIV#TypeOfBooks A:hover {
+                    background-color: #CCC;
+                }
+
+                DIV#TypeOfBooks A.selected:hover {
+                    background-color: #666;
+                }
     </style>
 </head>
 <div id="bookmark">
@@ -99,21 +112,32 @@
     <div id="bookmarkItems">
         text<br>text
     </div>
-    </div>
+</div>
 <div id="content">
     <div id="TypeOfBooks">
-    @Html.ActionLink("All Books", "Index", new { Own = 0 }, new { @style = "float:left;width:47%;" })
-    @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:right;width:50%;" })</div>
-    @foreach (var b in Model)
+        @Html.ActionLink("All Books", "Index", new { Own = 0 }, new { @style = "float:left;width:47%;" })
+        @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:right;width:50%;" })
+    </div>
+    <h2>Add Books</h2>
+    @using (Html.BeginForm("AddBook", "PersonalArea", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        Html.RenderPartial("BooksPartial",b);
+        <h3>@Html.LabelFor(b => b.nameOfBook)</h3>
+        @Html.EditorFor(b => b.nameOfBook)
+        <h3>@Html.LabelFor(b => b.genreOfBook)</h3>
+        @Html.EditorFor(b => b.genreOfBook)
+        <div>Upload book:       
+            <input type="file" name="bookFile" />
+         </div>
+    <p>
+        <input type="submit" value="Add Book" />
+        @Html.ActionLink("Return to your book", "Index", new { Own = 1 })
+    </p>
     }
-    @ViewBag.IdU @ViewBag.Name
     <p>main side of site</p>
     <p>main side of site</p>
     <p>main side of site</p>
     <p>main side of site</p>
     <p>main side of site</p>
     <p>main side of site</p>
-    @Html.ActionLink("Your books", "AddBook")
 </div>
+

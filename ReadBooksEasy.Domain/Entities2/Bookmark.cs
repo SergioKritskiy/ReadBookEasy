@@ -20,5 +20,6 @@ namespace ReadBooksEasy.Domain.Entities2
         public int numberOfPage { get; set; }
     
         public virtual Book Book { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

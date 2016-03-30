@@ -27,6 +27,7 @@ namespace ReadBooksEasy.Domain.Entities2
     
         public virtual DbSet<Bookmark> Bookmarks { get; set; }
         public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<UserProfile> UserProfiles { get; set; }
         public virtual DbSet<UsersBook> UsersBooks { get; set; }
     }
 }

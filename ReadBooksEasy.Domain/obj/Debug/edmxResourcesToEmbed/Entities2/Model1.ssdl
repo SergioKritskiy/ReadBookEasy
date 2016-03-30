@@ -19,6 +19,13 @@
     <Property Name="fileOfBook" Type="varbinary(max)" />
     <Property Name="ratingOfBook" Type="float" />
   </EntityType>
+  <EntityType Name="UserProfile">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="UsersBooks">
     <Key>
       <PropertyRef Name="IdUsers" />
@@ -28,6 +35,7 @@
     <Property Name="idBooks" Type="int" Nullable="false" />
     <Property Name="usingFieldRating" Type="bit" />
     <Property Name="ratingForBook" Type="float" />
+    <Property Name="userBooksBookFk" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK__Bookmarks__IdBoo__398D8EEE">
     <End Role="Books" Type="Self.Books" Multiplicity="1" />
@@ -41,7 +49,19 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UsersBook__idBoo__3B75D760">
+  <Association Name="FK__Bookmarks__IdUse__38996AB5">
+    <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+    <End Role="Bookmarks" Type="Self.Bookmarks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Bookmarks">
+        <PropertyRef Name="IdUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UsersBook__userB__5AEE82B9">
     <End Role="Books" Type="Self.Books" Multiplicity="1" />
     <End Role="UsersBooks" Type="Self.UsersBooks" Multiplicity="*" />
     <ReferentialConstraint>
@@ -49,19 +69,24 @@
         <PropertyRef Name="idBook" />
       </Principal>
       <Dependent Role="UsersBooks">
-        <PropertyRef Name="idBooks" />
+        <PropertyRef Name="userBooksBookFk" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="Bookmarks" EntityType="Self.Bookmarks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UsersBooks" EntityType="Self.UsersBooks" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__Bookmarks__IdBoo__398D8EEE" Association="Self.FK__Bookmarks__IdBoo__398D8EEE">
       <End Role="Books" EntitySet="Books" />
       <End Role="Bookmarks" EntitySet="Bookmarks" />
     </AssociationSet>
-    <AssociationSet Name="FK__UsersBook__idBoo__3B75D760" Association="Self.FK__UsersBook__idBoo__3B75D760">
+    <AssociationSet Name="FK__Bookmarks__IdUse__38996AB5" Association="Self.FK__Bookmarks__IdUse__38996AB5">
+      <End Role="UserProfile" EntitySet="UserProfile" />
+      <End Role="Bookmarks" EntitySet="Bookmarks" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UsersBook__userB__5AEE82B9" Association="Self.FK__UsersBook__userB__5AEE82B9">
       <End Role="Books" EntitySet="Books" />
       <End Role="UsersBooks" EntitySet="UsersBooks" />
     </AssociationSet>
