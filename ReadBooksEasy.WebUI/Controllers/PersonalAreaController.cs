@@ -55,5 +55,11 @@ namespace ReadBooksEasy.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ShowPdf(int idOfBook) {
+            Book bookFromDb = repo.Books.FirstOrDefault(b => b.idBook==idOfBook);
+            //bookFromDb.
+            return File(bookFromDb.fileOfBook, "application/pdf");
+        }
+
     }
 }

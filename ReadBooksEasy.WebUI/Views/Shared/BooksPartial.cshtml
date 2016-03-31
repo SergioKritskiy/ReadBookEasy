@@ -26,5 +26,10 @@
     <h3>@Model.nameOfBook</h3>
     @Model.genreOfBook
     <h4>@Model.ratingOfBook</h4>
+    @using (Html.BeginForm("ShowPdf", "PersonalArea"))
+    {
+        @Html.Hidden("idOfBook", Model.idBook)           
+        <input type="submit" value="Show Book" />         
+    }
 </div>
 
