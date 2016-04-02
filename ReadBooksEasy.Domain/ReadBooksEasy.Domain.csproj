@@ -65,8 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IBookRepository.cs" />
+    <Compile Include="Abstract\IUserBookRepository.cs" />
     <Compile Include="Concrete\DefaultConnection.cs" />
     <Compile Include="Concrete\EFBooksRepository.cs" />
+    <Compile Include="Concrete\EFUserBookRepository.cs" />
     <Compile Include="Entities2\Book.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

@@ -20,6 +20,11 @@ namespace ReadBooksEasy.WebUI.Controllers
         public PersonalAreaController(IBookRepository bookRepository) {
             this.repo = bookRepository;        
         }
+        /*private IUserBookRepository repoUserBook;
+        public PersonalAreaController(IUserBookRepository userbookRepository)
+        {
+            this.repoUserBook = userbookRepository;
+        }*/
         public ActionResult Index(int? Own)
         {
             var IdOfUser = WebSecurity.GetUserId(User.Identity.Name);
@@ -30,9 +35,10 @@ namespace ReadBooksEasy.WebUI.Controllers
             //repo.SaveBook(1,book);
             if (Own == 1)
             {
-                IList<Book> UsersBook = new List<Book>();
-                UsersBook.Add(repo.Books.FirstOrDefault());
-                return View(UsersBook);
+                var sequence = repo.UserBook.Where(u=>u.IdUsers==IdOfUser).Select(b=>b.Book);
+                //IList<Book> UsersBook = new List<Book>();
+                //UsersBook.Add(repo.Books.FirstOrDefault());
+                return View(sequence);
             }
             else
             {
@@ -57,6 +63,7 @@ namespace ReadBooksEasy.WebUI.Controllers
 
         public ActionResult ShowPdf(int idOfBook) {
             Book bookFromDb = repo.Books.FirstOrDefault(b => b.idBook==idOfBook);
+            //repo.
             //bookFromDb.
             return File(bookFromDb.fileOfBook, "application/pdf");
         }

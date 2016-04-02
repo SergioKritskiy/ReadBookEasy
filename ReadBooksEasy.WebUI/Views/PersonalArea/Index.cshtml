@@ -82,10 +82,11 @@
 
         DIV#TypeOfBooks A {   
             font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; 
-            display: -webkit-inline-box;   
+            display: inline;   
             text-decoration: none; 
             padding: .6em; 
             color: Black;   
+            text-align: center;
             border: 1px solid silver; 
             } 
         DIV#TypeOfBooks A.selected { background-color: #666; color: White; } 
@@ -102,11 +103,19 @@
     </div>
 <div id="content">
     <div id="TypeOfBooks">
-    @Html.ActionLink("All Books", "Index", new { Own = 0 }, new { @style = "float:left;width:47%;" })
-    @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:right;width:50%;" })</div>
-    @foreach (var b in Model)
+    @Html.ActionLink("All Books", "Index", new { Own = 0 }, new { @style = "float:left;width:35%;" })
+    @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:left;width:35%;" })
+    @Html.ActionLink("Add your book", "AddBook", null, new { @style = "float:right;width:25%;" })
+    </div>
+    @if (Model.ToList().Count != 0)
     {
-        Html.RenderPartial("BooksPartial",b);
+        foreach (var b in Model)
+        {
+            Html.RenderPartial("BooksPartial", b);
+        }
+    }
+    else {
+    <span>You dont have, added book</span>
     }
     @ViewBag.IdU @ViewBag.Name
     <p>main side of site</p>
@@ -115,5 +124,5 @@
     <p>main side of site</p>
     <p>main side of site</p>
     <p>main side of site</p>
-    @Html.ActionLink("Your books", "AddBook")
+    
 </div>

@@ -9,6 +9,8 @@ namespace ReadBooksEasy.Domain.Abstract
     public interface IBookRepository
     {
         IQueryable<Book> Books { get; }
+        IQueryable<UsersBook> UserBook { get; }
+        IQueryable<Bookmark> Bookmark { get; }
         void SaveBook(int UserId,Book book);
         Book RemoveBook(int BookId);
     }

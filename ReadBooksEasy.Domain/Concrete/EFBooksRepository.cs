@@ -18,11 +18,10 @@ namespace ReadBooksEasy.Domain.Concrete
         {
             get { return context.Bookmark; }
         }
-        public IQueryable<UsersBook> UsersBook
+        public IQueryable<UsersBook> UserBook
         {
             get { return context.UserBook; }
         }
-
         public void SaveBook(int UserId, Book book) {
             var NameOfBook = context.Books.FirstOrDefault(b=>b.nameOfBook.Equals(book.nameOfBook));
             UsersBook newRecord = new UsersBook();

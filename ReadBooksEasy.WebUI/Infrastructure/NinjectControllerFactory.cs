@@ -32,6 +32,7 @@ namespace ReadBooksEasy.WebUI.Infrastructure
         private void AddBindings()
         {
             ninjectKernel.Bind<IBookRepository>().To<EFBooksRepository>();
+         //   ninjectKernel.Bind<IUserBookRepository>().To<EFUserBookRepository>();
             // конфигурирование контейнера
         }
     }
