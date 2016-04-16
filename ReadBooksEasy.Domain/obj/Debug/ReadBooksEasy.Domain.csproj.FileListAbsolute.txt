@@ -19,6 +19,6 @@ C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.dll
 C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.SqlServer.dll
 C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.xml
 C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\bin\Debug\EntityFramework.SqlServer.xml
-C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\obj\Debug\ReadBooksEasy.Domain.csprojResolveAssemblyReference.cache
 C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\obj\Debug\ReadBooksEasy.Domain.dll
 C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\obj\Debug\ReadBooksEasy.Domain.pdb
+C:\Projects\ReadBookEasy\ReadBooksEasy.Domain\obj\Debug\ReadBooksEasy.Domain.csprojResolveAssemblyReference.cache

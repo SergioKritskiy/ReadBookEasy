@@ -144,8 +144,9 @@
                 <li>
                     <a href="/PersonalArea/ShowPdf?idOfBook={{b.idBook}}"> Show Book </a>
                 </li>
+                <li ng-hide="personalArea" ng-repeat="test in idOfUserBook | filter: b.idBook"><img title="Favourits" src="~/Images/favourites/fav.png" style="width:50px;height:50px;"></li>
                 <li>
-                    <a ng-click="AddBookToUserPlaylist(b.idBook); ShowPersonalBookOrNot();" ng-hide="personalArea"> ++ </a> <a ng-click="ShowPersonalBookOrNot(); RemoveBookFromUserPlaylist(b.idBook); " ng-show="personalArea"> -- </a>
+                    <a ng-click="ShowPersonalBookOrNot(); AddBookToUserPlaylist(b.idBook); " ng-hide="personalArea||ShowButtonToAdd(b.idBook);"> <img title="Add to favourites" src="~/Images/favourites/add-favourites.png" style="width:50px;height:50px;" /> </a> <a ng-click="ShowPersonalBookOrNot(); RemoveBookFromUserPlaylist(b.idBook); " ng-show="personalArea"> <img title="Remove from favourites" src="~/Images/favourites/favorite-remove-icon.png" style="width:50px;height:50px;" /> </a>
                 </li>
             </ul>
         </div>
@@ -156,7 +157,8 @@
         var app = angular.module("personalArea", []);
         app.controller("book", function ($scope, $http) {
             $http.get("/PersonalArea/IndexJson?own=0").then(function (response) {
-                $scope.books = response.data;
+                $scope.books = response.data.sequence;
+                $scope.idOfUserBook = response.data.idOfUserBook;
                 });
             $scope.countOfUserBooks = -1;
             $scope.personalArea = false;
@@ -167,7 +169,8 @@
             $scope.getAllbook = getAllbook;
             function getAllbook() {
                 $http.get('/PersonalArea/IndexJson?own=0').success(function (data) {
-                    $scope.books = data;
+                    $scope.books = data.sequence;
+                    $scope.idOfUserBook = data.idOfUserBook;
                     $scope.personalArea = false;
                     //SetPersonalAreaOrNot();
                 });
@@ -186,8 +189,8 @@
             $scope.getUsersBook = getUsersBook;
             function getUsersBook() {
                 $http.get('/PersonalArea/IndexJson?own=1').success(function (data) {
-                    $scope.books = data;// Update Model-- Line X
-                    $scope.countOfUserBooks = data.length;
+                    $scope.books = data.sequence;// Update Model-- Line X
+                    $scope.countOfUserBooks = data.sequence.length;
                     $scope.personalArea = true;
                     //SetPersonalAreaOrNot();
                 });
@@ -228,14 +231,26 @@
             function ShowPersonalBookOrNot() {
                 if ($scope.personalArea) {
                     $http.get('/PersonalArea/IndexJson?own=1').success(function (data) {
-                        $scope.books = data;// Update Model-- Line X
-                        $scope.countOfUserBooks = data.length;
+                        $scope.books = data.sequence;// Update Model-- Line X
+                        $scope.countOfUserBooks = data.sequence.length;
                     });
                     $scope.getUsersBook();
                 }
                 else {
                     $scope.getAllbook();
                 }
+            };
+
+            $scope.ShowButtonToAdd = ShowButtonToAdd;
+            function ShowButtonToAdd(idOfBook) {
+                var counter = 0;
+                while ($scope.idOfUserBook.length!=counter){
+                    if ($scope.idOfUserBook[counter] == idOfBook) {
+                        return true;
+                    };
+                    counter++;
+                }
+                return false;
             };
 
             $scope.getAllbook();

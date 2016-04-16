@@ -20,6 +20,11 @@ namespace ReadBooksEasy.WebUI.Controllers
         public PersonalAreaController(IBookRepository bookRepository) {
             this.repo = bookRepository; 
         }
+
+        protected class RezultOfBookRequest {
+            public List<int> idOfUserBook = new List<int>();
+            public List<Book> sequence = new List<Book>();
+        }
         /*private IUserBookRepository repoUserBook;
         public PersonalAreaController(IUserBookRepository userbookRepository)
         {
@@ -58,20 +63,25 @@ namespace ReadBooksEasy.WebUI.Controllers
             ViewBag.Name = User.Identity.Name;
             ViewBag.Message = "Authorize area.";
             Book book = new Book() { nameOfBook = "new" };
+            RezultOfBookRequest rez = new RezultOfBookRequest();
             //repo.SaveBook(1,book);
             if (Own == 1)
             {
                 var sequence = repo.UserBook.Where(u => u.IdUsers == IdOfUser).Select(b => b.Book).ToList();
                 sequence.ForEach(b => b.fileOfBook = null);
+                rez.idOfUserBook = null;
+                rez.sequence = sequence;
                 //IList<Book> UsersBook = new List<Book>();
                 //UsersBook.Add(repo.Books.FirstOrDefault());
-                return Json(sequence, JsonRequestBehavior.AllowGet);
+                return Json(rez, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 var sequence= repo.Books.ToList();
                 sequence.ForEach(b => b.fileOfBook = null);
-                return Json(sequence, JsonRequestBehavior.AllowGet);
+                rez.idOfUserBook.AddRange(repo.UserBook.Where(u => u.IdUsers == IdOfUser).Select(b => b.idBooks).ToList());
+                rez.sequence = sequence;
+                return Json(rez, JsonRequestBehavior.AllowGet);
             }
         }
 
