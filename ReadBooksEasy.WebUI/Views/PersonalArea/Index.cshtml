@@ -10,6 +10,29 @@
             height: 100%;
         }
 
+                DIV.item {
+            border-top: 1px dotted gray;
+            padding-top: .7em;
+            margin-bottom: .7em;
+
+        }
+
+            DIV.item:first-child {
+                border-top: 1px dotted gray;
+                padding-top:.7em;
+
+            }
+
+            DIV.item H3 {
+                font-size: 1.3em;
+                margin: 0 0 .25em 0;
+            }
+
+            DIV.item H4 {
+                font-size: 1.1em;
+                margin: .4em 0 0 0;
+            }
+
         BODY {
             font-family: Cambria, Georgia, "Times New Roman";
             margin: 0;
@@ -92,8 +115,8 @@
         DIV#TypeOfBooks A.selected { background-color: #666; color: White; } 
         DIV#TypeOfBooks A:hover { background-color: #CCC; } 
         DIV#TypeOfBooks A.selected:hover { background-color: #666; }
-
     </style>
+
 </head>
 <div id="bookmark">
     <p style="text-align:center">Bookmark</p>
@@ -101,28 +124,106 @@
         text<br>text
     </div>
     </div>
-<div id="content">
+<div id="content" ng-app="personalArea" ng-controller="book">
     <div id="TypeOfBooks">
-    @Html.ActionLink("All Books", "Index", new { Own = 0 }, new { @style = "float:left;width:35%;" })
-    @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:left;width:35%;" })
-    @Html.ActionLink("Add your book", "AddBook", null, new { @style = "float:right;width:25%;" })
+        <a id="AllBooks" style="float:left;width:35%;" ng-click="getAllbook()">All Books</a>
+        <!--Html.ActionLink("All Books", "Index", new { Own = 0 }, new { style = "float:left;width:35%;", id="AllBooks" }) -->
+        <a id="YourBook" style="float:left;width:34%;" ng-click="getUsersBook()">Your books</a>
+        <!--Html.ActionLink("Your books", "IndexJson", new { Own = 1 }, new { style = "float:left;width:35%;", id = "YourBook" })-->
+        @Html.ActionLink("Add your book", "AddBook", null, new { @style = "float:right;width:25%;", id = "AddBook" })
     </div>
-    @if (Model.ToList().Count != 0)
-    {
-        foreach (var b in Model)
-        {
-            Html.RenderPartial("BooksPartial", b);
-        }
-    }
-    else {
-    <span>You dont have, added book</span>
-    }
-    @ViewBag.IdU @ViewBag.Name
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
-    
+
+    <h3>List of books</h3>
+    <div>
+        <div class="item" ng-repeat="b in books">
+            <ul>
+                <li>Id of book= {{b.idBook}} </li>
+                <li>Name of book {{b.nameOfBook}} </li>
+                <li>Genre of book {{b.genreOfBook}} </li>
+                <li>Rating of book {{b.ratingOfBook}} </li>
+                <li>
+                    <a href="/PersonalArea/ShowPdf?idOfBook={{b.idBook}}"> Show Book </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var app = angular.module("personalArea", []);
+        app.controller("book", function ($scope, $http) {
+            $http.get("/PersonalArea/IndexJson?own=0").then(function (response) {
+                $scope.books = response.data;
+            });
+          /*  $scope.books = [{ "idBook": 2, "nameOfBook": "Asp.Net", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }, { "idBook": 3, "nameOfBook": "Jquiery", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }]; */
+
+                /*[{ "idBook": 2, "nameOfBook": "Asp.Net", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }, { "idBook": 3, "nameOfBook": "Jquiery", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }, { "idBook": 12, "nameOfBook": "lol", "genreOfBook": "j", "fileOfBook": null, "ratingOfBook": null, "Bookmarks": null, "UsersBooks": null }, { "idBook": 13, "nameOfBook": "nerd", "genreOfBook": "genre", "fileOfBook": null, "ratingOfBook": null, "Bookmarks": null, "UsersBooks": null }]; */
+
+            $scope.getAllbook = getAllbook;
+            function getAllbook() {
+                $http.get('/PersonalArea/IndexJson?own=0').success(function (data) {
+                    $scope.books = data;
+                });
+
+              /*  $.ajax({
+                    url: "/PersonalArea/IndexJson",
+                    type: "GET",
+                    data: $.param({ own: 0 }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $scope.books = data;
+                    }
+                });*/ 
+            };
+            $scope.getUsersBook = getUsersBook;
+            function getUsersBook() {
+                $http.get('/PersonalArea/IndexJson?own=1').success(function (data) {
+                    $scope.books = data;// Update Model-- Line X
+                });
+           /*     $.ajax({
+                    url: "/PersonalArea/IndexJson",
+                    type: "GET",
+                    data: $.param({ own: 1 }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $scope.books = data;
+                    }
+                }); */
+            };
+            $scope.getAllbook();
+        });
+
+        $(document).ready(function () {
+
+
+            /*          $('#AllBooks').click(function () {
+                $.ajax({
+                    url: "/PersonalArea/IndexJson",
+                    type: "GET",
+                    data: $.param({ own: 0 }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        alert(data[0].idBook);
+                        selectedbooks = data;
+                    }
+                });
+            });
+
+          $('#YourBook').click(function () {
+                $.ajax({
+                    url: "/PersonalArea/IndexJson",
+                    type: "GET",
+                    data: $.param({ own: 1 }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        alert(data[0].idBook);
+                        selectedbooks = data;
+                    }
+                });
+            }); */
+        });
+    </script>
+
 </div>

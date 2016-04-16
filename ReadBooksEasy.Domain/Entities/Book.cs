@@ -9,11 +9,11 @@ namespace ReadBooksEasy.Domain.Entities
 {
     public class Book
     {
-        public Book()
+      /*  public Book()
         {
             this.Bookmarks = new HashSet<Bookmark>();
             this.UsersBooks = new HashSet<UsersBook>();
-        }
+        } */
         [Key]
         [HiddenInput(DisplayValue=false)]
         public int idBook { get; set; }

@@ -116,7 +116,7 @@
 <div id="content">
     <div id="TypeOfBooks">
         @Html.ActionLink("All Books", "Index", new { Own = 0 }, new { @style = "float:left;width:47%;" })
-        @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:right;width:50%;" })
+        @Html.ActionLink("Your books", "Index", new { Own = 1 }, new { @style = "float:right;width:49%;" })
     </div>
     <h2>Add Books</h2>
     @using (Html.BeginForm("AddBook", "PersonalArea", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -133,11 +133,6 @@
         @Html.ActionLink("Return to your book", "Index", new { Own = 1 })
     </p>
     }
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
-    <p>main side of site</p>
+    
 </div>
 

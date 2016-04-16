@@ -18,6 +18,9 @@ namespace ReadBooksEasy.Domain.Concrete
         {
             get { return context.Bookmark; }
         }
+        protected void CloseConnection() {
+            context.Dispose();
+        }
         public IQueryable<UsersBook> UserBook
         {
             get { return context.UserBook; }
