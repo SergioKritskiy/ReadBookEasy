@@ -137,22 +137,29 @@
     <div>
         <div class="item" ng-repeat="b in books">
             <ul>
-                <li>Id of book= {{b.idBook}} </li>
+                <li hidden>Id of book= {{b.idBook}} </li>
                 <li>Name of book {{b.nameOfBook}} </li>
                 <li>Genre of book {{b.genreOfBook}} </li>
                 <li>Rating of book {{b.ratingOfBook}} </li>
                 <li>
                     <a href="/PersonalArea/ShowPdf?idOfBook={{b.idBook}}"> Show Book </a>
                 </li>
+                <li>
+                    <a ng-click="AddBookToUserPlaylist(b.idBook); ShowPersonalBookOrNot();" ng-hide="personalArea"> ++ </a> <a ng-click="ShowPersonalBookOrNot(); RemoveBookFromUserPlaylist(b.idBook); " ng-show="personalArea"> -- </a>
+                </li>
             </ul>
         </div>
+        <span ng-show="countOfUserBooks==0">You has {{countOfUserBooks}} books in your 'playlist'. Add book by click '++'</span>
+        
     </div>
     <script type="text/javascript">
         var app = angular.module("personalArea", []);
         app.controller("book", function ($scope, $http) {
             $http.get("/PersonalArea/IndexJson?own=0").then(function (response) {
                 $scope.books = response.data;
-            });
+                });
+            $scope.countOfUserBooks = -1;
+            $scope.personalArea = false;
           /*  $scope.books = [{ "idBook": 2, "nameOfBook": "Asp.Net", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }, { "idBook": 3, "nameOfBook": "Jquiery", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }]; */
 
                 /*[{ "idBook": 2, "nameOfBook": "Asp.Net", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }, { "idBook": 3, "nameOfBook": "Jquiery", "genreOfBook": "Sci", "fileOfBook": null, "ratingOfBook": 5, "Bookmarks": null, "UsersBooks": null }, { "idBook": 12, "nameOfBook": "lol", "genreOfBook": "j", "fileOfBook": null, "ratingOfBook": null, "Bookmarks": null, "UsersBooks": null }, { "idBook": 13, "nameOfBook": "nerd", "genreOfBook": "genre", "fileOfBook": null, "ratingOfBook": null, "Bookmarks": null, "UsersBooks": null }]; */
@@ -161,6 +168,8 @@
             function getAllbook() {
                 $http.get('/PersonalArea/IndexJson?own=0').success(function (data) {
                     $scope.books = data;
+                    $scope.personalArea = false;
+                    //SetPersonalAreaOrNot();
                 });
 
               /*  $.ajax({
@@ -178,6 +187,9 @@
             function getUsersBook() {
                 $http.get('/PersonalArea/IndexJson?own=1').success(function (data) {
                     $scope.books = data;// Update Model-- Line X
+                    $scope.countOfUserBooks = data.length;
+                    $scope.personalArea = true;
+                    //SetPersonalAreaOrNot();
                 });
            /*     $.ajax({
                     url: "/PersonalArea/IndexJson",
@@ -190,6 +202,42 @@
                     }
                 }); */
             };
+
+            $scope.AddBookToUserPlaylist = AddBookToUserPlaylist;
+            function AddBookToUserPlaylist(idOfBook) {
+                $http.get('/PersonalArea/AddBookToUserPlaylist?idOfBook='+idOfBook+'').success(function (data) {
+                });
+            };
+
+            $scope.RemoveBookFromUserPlaylist = RemoveBookFromUserPlaylist;
+            function RemoveBookFromUserPlaylist(idOfBook) {
+                $http.get('/PersonalArea/RemoveBookFromUserPlaylist?idOfBook=' + idOfBook + '').success(function (data) {
+                });
+            };
+            $scope.SetPersonalAreaOrNot = SetPersonalAreaOrNot;
+            function SetPersonalAreaOrNot() {
+                if ($scope.personalArea) {
+                    $scope.personalArea = false;
+                }
+                else {
+                    $scope.personalArea = true;
+                }
+            };
+
+            $scope.ShowPersonalBookOrNot = ShowPersonalBookOrNot;
+            function ShowPersonalBookOrNot() {
+                if ($scope.personalArea) {
+                    $http.get('/PersonalArea/IndexJson?own=1').success(function (data) {
+                        $scope.books = data;// Update Model-- Line X
+                        $scope.countOfUserBooks = data.length;
+                    });
+                    $scope.getUsersBook();
+                }
+                else {
+                    $scope.getAllbook();
+                }
+            };
+
             $scope.getAllbook();
         });
 

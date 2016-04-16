@@ -13,5 +13,7 @@ namespace ReadBooksEasy.Domain.Abstract
         IQueryable<Bookmark> Bookmark { get; }
         void SaveBook(int UserId,Book book);
         Book RemoveBook(int BookId);
+        void AddBookToPlaylistUser(int UserId, int BookId);
+        void RemoveBookFromPlaylistUser(int UserId, int BookId);
     }
 }

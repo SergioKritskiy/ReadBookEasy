@@ -43,6 +43,46 @@ namespace ReadBooksEasy.Domain.Concrete
             }
             
         }
+        public void AddBookToPlaylistUser(int UserId, int BookId)
+        {
+       //     var NameOfBook = context.Books.FirstOrDefault(b => b.idBook==BookId);
+            UsersBook newRecord = new UsersBook();
+                var BookInDb = context.Books.FirstOrDefault(b => b.idBook == BookId);
+                newRecord.idBooks = BookId;
+                newRecord.Book = BookInDb;
+                newRecord.IdUsers = UserId;
+                newRecord.usingFieldRating = false;
+                newRecord.ratingForBook = null;
+                newRecord.userBooksBookFk = BookId;
+                try
+                {
+                    context.UserBook.Add(newRecord);
+                    context.SaveChanges();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("{0} Exception caught.", e);
+                }
+        }
+        public void RemoveBookFromPlaylistUser(int UserId, int BookId)
+        {
+            var NameOfBook = context.Books.FirstOrDefault(b => b.idBook == BookId);
+            //UsersBook recToRemove = new UsersBook();
+            UsersBook recToRemove = context.UserBook.FirstOrDefault(ub => ub.idBooks == BookId && ub.IdUsers == UserId);
+           /* recToRemove.idBooks = BookId;
+            recToRemove.IdUsers = UserId;
+            recToRemove.userBooksBookFk = BookId;
+            recToRemove.Book = NameOfBook; */
+            try
+            {
+                context.UserBook.Remove(recToRemove);
+                context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("{0} Exception caught.", e);
+            }
+        }
+
         public Book RemoveBook(int BookId) {
             return context.Books.FirstOrDefault();
         }

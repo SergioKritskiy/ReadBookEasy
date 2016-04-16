@@ -75,6 +75,20 @@ namespace ReadBooksEasy.WebUI.Controllers
             }
         }
 
+        public void AddBookToUserPlaylist(int idOfBook)
+        {
+            var IdOfUser = WebSecurity.GetUserId(User.Identity.Name);
+            Book book = new Book() { nameOfBook = "new" };
+
+            repo.AddBookToPlaylistUser(IdOfUser,idOfBook);
+        }
+
+        public void RemoveBookFromUserPlaylist(int idOfBook)
+        {
+            var IdOfUser = WebSecurity.GetUserId(User.Identity.Name);
+            Book book = new Book() { nameOfBook = "new" };
+            repo.RemoveBookFromPlaylistUser(IdOfUser, idOfBook);
+        }
         public ActionResult AddBook() {
             return View();
         }
